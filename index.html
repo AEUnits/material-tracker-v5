@@ -120,7 +120,7 @@
                 </div>
                 <input type="text" id="globalSearch" 
                        class="block w-full pl-10 pr-24 p-4 border-2 border-gray-300 rounded-xl leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:border-primary-blue focus:ring-2 focus:ring-blue-300 sm:text-lg transition shadow-md" 
-                       placeholder="Quick search all materials (ID, CU, Description)..."
+                       placeholder="Quick search all materials (CU, ID, Description)..."
                        onkeydown="if(event.key === 'Enter') performGlobalSearch(this.value)">
                 <div class="absolute inset-y-0 right-0 flex py-2 pr-2">
                     <button onclick="performGlobalSearch(document.getElementById('globalSearch').value)" 
@@ -151,7 +151,7 @@
                 <div class="flex items-center bg-blue-50 border border-blue-200 rounded-md px-3 py-1.5 shadow-sm whitespace-nowrap">
                     <span class="text-xs font-semibold text-gray-500 mr-2 uppercase tracking-wider hidden md:inline">Category:</span>
                     <strong id="current-filter-category" class="text-primary-blue text-sm sm:text-base">All Materials</strong>
-                    <button id="clear-filter-btn" class="hidden ml-2 text-xs font-bold text-red-500 hover:text-red-700 bg-white px-1.5 rounded border border-red-100" onclick="clearCategoryFilter()">Clear</button>
+                    <!-- Clear button removed -->
                 </div>
             </div>
 
@@ -176,7 +176,7 @@
                 </div>
                 <!-- Removed onkeyup, added onkeydown for Enter key -->
                 <input type="text" id="searchInput" class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-300 focus:border-primary-blue transition shadow-sm" 
-                       placeholder="Search materials by ID, Description or CU..." 
+                       placeholder="Search materials by CU, ID, or Description..." 
                        onkeydown="if(event.key === 'Enter') filterMaterials()">
             </div>
             <!-- New Manual Search Button -->
@@ -194,8 +194,9 @@
             <table id="materialTable" class="w-full text-left">
                 <thead>
                     <tr class="text-sm uppercase text-gray-600 border-b border-gray-300">
-                        <th class="py-3 px-4">ID</th>
-                        <th class="py-3 px-4">CU / Description</th>
+                        <!-- UPDATED: Swapped Column Order -->
+                        <th class="py-3 px-4">CU</th>
+                        <th class="py-3 px-4">ID / Description</th>
                         <th class="py-3 px-4">Controls (WO / Type / Loc / Qty)</th>
                     </tr>
                 </thead>
@@ -602,19 +603,14 @@
         document.getElementById('view-toc').classList.add('hidden');
         document.getElementById('view-selection').classList.remove('hidden');
         
-        const clearBtn = document.getElementById('clear-filter-btn');
-        if (categoryName === 'All Materials') {
-            clearBtn.classList.add('hidden');
-        } else {
-            clearBtn.classList.remove('hidden');
-        }
+        // Logic for clear-filter-btn removed
         
         filterMaterials(); // Render the filtered list
     }
     
     function clearCategoryFilter() {
         document.getElementById('current-filter-category').innerText = 'All Materials';
-        document.getElementById('clear-filter-btn').classList.add('hidden');
+        // Logic for clear-filter-btn removed
         filterMaterials();
     }
     
@@ -810,11 +806,12 @@
         displayData.forEach(item => {
             const safeId = item.id.replace(/[^a-zA-Z0-9-_]/g, ''); 
 
+            // UPDATED: Swapped Column Content
             const row = `
                 <tr class="hover:bg-gray-50 transition duration-100 border-b border-gray-100">
-                    <td class="py-3 px-4 align-top"><strong>${item.id}</strong></td>
+                    <td class="py-3 px-4 align-top"><strong>${item.cu}</strong></td>
                     <td class="py-3 px-4 align-top">
-                        <strong class="text-gray-900">${item.cu}</strong><br>
+                        <strong class="text-gray-900">${item.id}</strong><br>
                         <span class="text-xs text-gray-500">${item.desc}</span>
                     </td>
                     <td class="py-3 px-4 align-top">
