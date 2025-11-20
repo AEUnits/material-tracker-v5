@@ -656,20 +656,29 @@
     function quickAddFromRow(id) {
         const input = document.getElementById(`wo-${id}`);
         const val = input.value.trim();
-        if(val) {
-            registerWO(val);
-            const btn = document.getElementById(`plus-${id}`);
-            const originalText = btn.innerText;
-            btn.innerText = "✓";
-            btn.classList.add('text-success-green', 'border-success-green');
-            setTimeout(() => {
-                btn.innerText = "+";
-                btn.classList.remove('text-success-green', 'border-success-green');
-            }, 1000);
-        } else {
+
+        if(!val) {
             showCustomAlert("Please enter a Work Order Number in the box first to add it to the quick list.", "WO Required");
             input.focus();
+            return;
         }
+
+        // NEW: Validation for hyphen
+        if (!val.includes('-')) {
+            showCustomAlert("Work Order Number must contain a hyphen '-' followed by a task number (e.g., 56891115-1).", "Invalid Format");
+            input.focus();
+            return;
+        }
+
+        registerWO(val);
+        const btn = document.getElementById(`plus-${id}`);
+        const originalText = btn.innerText;
+        btn.innerText = "✓";
+        btn.classList.add('text-success-green', 'border-success-green');
+        setTimeout(() => {
+            btn.innerText = "+";
+            btn.classList.remove('text-success-green', 'border-success-green');
+        }, 1000);
     }
 
     function updateDatalist() {
@@ -924,6 +933,14 @@
             woInput.focus();
             return;
         }
+
+        // NEW: Validation for hyphen
+        if (!wo.includes('-')) {
+            showCustomAlert("Work Order Number must contain a hyphen '-' followed by a task number (e.g., 56891115-1).", "Invalid Format");
+            woInput.focus();
+            return;
+        }
+
         if (qty <= 0 || isNaN(qty)) {
              showCustomAlert("Quantity must be a positive number.", "Invalid Quantity");
              qtyInput.focus();
