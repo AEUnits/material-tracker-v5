@@ -1063,7 +1063,8 @@
             const typePad = typeLabel.padEnd(6, ' ');
             const srcPad = item.source.padEnd(15, ' '); // Padding for alignment
             
-            body += `WO: ${woPad} | ${typePad} | Loc: ${srcPad} | ID: ${item.id.padEnd(15, ' ')} | Qty: ${item.qty.toString().padEnd(5, ' ')} | Desc: ${item.desc}\n`;
+            // UPDATED: Swapped item.id for item.cu to show the numeric ID in the email
+            body += `WO: ${woPad} | ${typePad} | Loc: ${srcPad} | ID: ${item.cu.padEnd(15, ' ')} | Qty: ${item.qty.toString().padEnd(5, ' ')} | Desc: ${item.desc}\n`;
         });
         
         body += `\n========================================================================\n`;
